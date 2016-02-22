@@ -26,9 +26,24 @@ public class Board {
     @Column(nullable = false)
     private String writer;
 
+    @Column(nullable = false)
+    private String password;
+
     @Column(insertable=false)
     private Date regDttm;
 
     @Column(insertable=false)
     private Date updDttm;
+
+    @Column(insertable = false)
+    private Boolean isPrivate;
+
+    public Board(){}
+
+    public Board(String title, String contents, String writer, String password){
+        this.setTitle(title);
+        this.setContents(contents);
+        this.setWriter(writer);
+        this.setPassword(password);
+    }
 }

@@ -1,10 +1,13 @@
 package com.board.Controller;
 
+import com.board.model.Board;
+import com.board.model.BoardRepository;
 import com.board.modelDto.BoardDto;
 import com.board.service.BoardService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -18,11 +21,10 @@ public class MainPageController {
     @Autowired
     private BoardService boardService;
 
-    @RequestMapping("/")
-    public String main() {
-        BoardDto boardDto = new BoardDto("test title", " test contents ", "tester");
-        boardService.register(boardDto.convertAsEntity());
 
+    @RequestMapping("/")
+    public String main(Model model) {
+        model.addAttribute("boards", boardService.findAll());
         return "main";
     }
 }

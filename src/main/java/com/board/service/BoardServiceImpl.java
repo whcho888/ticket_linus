@@ -5,6 +5,8 @@ import com.board.model.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by wonhyuk on 2016. 2. 19..
  */
@@ -27,5 +29,10 @@ public class BoardServiceImpl implements BoardService{
     public boolean delete(Long boardSrl){
         boardRepository.delete(boardSrl);
         return true;
+    }
+
+    @Autowired
+    public List<Board> findAll(){
+        return boardRepository.findAll();
     }
 }
