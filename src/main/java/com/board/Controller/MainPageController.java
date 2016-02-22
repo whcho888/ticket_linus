@@ -20,9 +20,9 @@ public class MainPageController {
 
     @RequestMapping("/")
     public String main() {
-        //BoardDto boardDto = new BoardDto("test title", " test contents ", "tester");
-        //boardService.register(boardDto.convertAsEntity());
+        BoardDto boardDto = new BoardDto("test title", " test contents ", "tester");
+        boardService.register(boardDto.convertAsEntity());
+
         return "main";
     }
-
 }

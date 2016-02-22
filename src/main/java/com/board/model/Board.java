@@ -26,9 +26,9 @@ public class Board {
     @Column(nullable = false)
     private String writer;
 
-    @Column(nullable = false)
+    @Column(insertable=false)
     private Date regDttm;
 
-    @Column(nullable = false)
+    @Column(insertable=false)
     private Date updDttm;
 }
