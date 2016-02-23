@@ -1,6 +1,8 @@
 package com.board.model;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -19,10 +21,24 @@ public interface BoardRepository extends CrudRepository<Board, Long> {
 
     List<Board> findByContents(String contents);
 
+    List<Board> findByIsPrivate(Boolean isPrivate);
+
     List<Board> findByWriter(String writer);
 
-    List<Board> findByRegDttm(Date start, Date end);
+    List<Board> findByWriterAndIsPrivate(String writer, Boolean isPrivate);
 
-    List<Board> findByUpdDttm(Date start, Date end);
+    List<Board> findByWriterLike(String writer);
+
+    List<Board> findByRegDttmBetween(Date start, Date end);
+
+    List<Board> findByUpdDttmBetween(Date start, Date end);
+
+    List<Board> findByWriterAndPassword(String wrtier, String password);
+
+    List<Board> findByWriterLikeAndPassword(String wrtier, String password);
+
+    List<Board> findByTitleLikeOrContentsLike(String title, String contents);
+
+
 
 }

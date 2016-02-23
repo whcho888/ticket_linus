@@ -1,0 +1,13 @@
+<div class="row" id="mainContainer">
+    {{#if boards}}
+    {{#boards}}
+        <div class="col-xs-6 col-lg-4">
+            <h2>{{title}}</h2>
+            <p>{{contents}}</p>
+            <p><a class="btn btn-default" href="#" role="button" onclick="getDetail({{boardSrl}})" name="detail">View details &raquo;</a></p>
+        </div><!--/.col-xs-6.col-lg-4-->
+    {{/boards}}
+    {{else}}
+        <h3>검색 결과가 없습니다. 검색 조건을 확인해 주세요!</h3>
+    {{/if}}
+</div><!--/row-->

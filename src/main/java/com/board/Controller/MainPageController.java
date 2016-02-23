@@ -1,15 +1,10 @@
-package com.board.Controller;
+package com.board.controller;
 
-import com.board.model.Board;
-import com.board.model.BoardRepository;
-import com.board.modelDto.BoardDto;
 import com.board.service.BoardService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 
 /**
@@ -23,8 +18,7 @@ public class MainPageController {
 
 
     @RequestMapping("/")
-    public String main(Model model) {
-        model.addAttribute("boards", boardService.findAll());
+    public String main() {
         return "main";
     }
 }
