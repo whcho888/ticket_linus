@@ -126,7 +126,7 @@
 <script src="js/sha256.js"></script>
 <script src="js/bootstrap-modalmanager.js"></script>
 <script src="js/bootstrap-modal.js"></script>
-<script src="js/board.js"></script>
+<script src="js/loadboards.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/offcanvas.js"></script>
 <script src="http://getbootstrap.com/2.3.2/assets/js/bootstrap.js"></script>
@@ -148,7 +148,6 @@
     });
 
     function update(boardSrl){
-        alert("hello?");
         ajaxManager.addReq({
             url : "/write/?boardSrl="+boardSrl,
             type : "GET", // http method

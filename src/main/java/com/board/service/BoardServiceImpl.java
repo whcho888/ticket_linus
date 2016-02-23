@@ -41,7 +41,7 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public List<Board> findOwn(String writer, String password) {
-        Set<Board> set = new HashSet<Board>(findByWriter(writer));
+        Set<Board> set = new HashSet<Board>(findByWriterAndIsPrivate(writer, false));
         set.addAll(findByWriterAndPassword(writer, password));
         return new ArrayList<Board>(set);
     }

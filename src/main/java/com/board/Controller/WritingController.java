@@ -28,7 +28,7 @@ public class WritingController {
     @RequestMapping(value="/", method = RequestMethod.GET)
     public String writingPage(@RequestParam(required = false) Long boardSrl, Model model) {
         if (boardSrl != null)
-            model.addAttribute("boardSrl", boardSrl);
+            model.addAttribute("board", boardService.findByBoardSrl(boardSrl));
         return "write";
     }
 
