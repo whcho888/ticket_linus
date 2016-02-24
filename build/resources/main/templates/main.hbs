@@ -43,8 +43,8 @@
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="#">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a id="about">About</a></li>
+                <li><a id="contact">Contact</a></li>
             </ul>
         </div><!-- /.nav-collapse -->
     </div><!-- /.container -->
@@ -58,7 +58,7 @@
             </p>
             <div class="jumbotron">
                 <h1>환영합니다.</h1>
-                <p>티켓 게시판에서 자유롭게 글을 작성하고 확인할 수 있습니다. 비밀글 기능이 있어서 자신만의 메모장 처럼 이용하실 수도 있습니다.</p>
+                <p>티켓 게시판에서 자유롭게 글을 작성하고 확인할 수 있습니다. 비밀글 기능이 있어서 자신만의 메모장 처럼 이용할 수도 있습니다.</p>
             </div>
             <div class="row" id="mainContainer">
             </div><!--/row-->
@@ -69,7 +69,7 @@
                 <a class="list-group-item active">메뉴</a>
                 <a class="list-group-item" id="write" onmouseover="" style="cursor: pointer;">글 쓰기</a>
                 <a class="list-group-item" id="showMine" data-toggle="modal" onmouseover="" style="cursor: pointer;">내가 쓴 글 보기</a>
-                <a class="list-group-item" id="showMine" data-toggle="modal" onmouseover="" style="cursor: pointer;">검색하기</a>
+                <a class="list-group-item" id="search" data-toggle="modal" onmouseover="" style="cursor: pointer;">검색하기</a>
                 <a class="list-group-item" id="goMain" href='/'>메인으로</a>
             </div>
         </div><!--/.sidebar-offcanvas-->
@@ -84,9 +84,8 @@
 
 
 <!-- Modal -->
-<div id="myModal" class="modal fade" role="dialog">
+<div id="getWriter" class="modal fade" role="dialog">
     <div class="modal-dialog">
-
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
@@ -109,6 +108,60 @@
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn">취소</button>
                 <button type="button" class="btn btn-primary" id="search">검색 시작</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="contact_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">개발자 프로필</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row-fluid">
+                    <div class="span6">
+                        <h4>작성자 이름: 조원혁</h4>
+                    </div>
+                    <div class="span6">
+                        <h4>이메일: linus@coupang.com</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="about_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">본 게시판 이용 정보</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row-fluid">
+                    <div class="span6">
+                        <h4>로그인 없이 자신만의 글 작성 가능! 작성자와 비밀번호를 적고 자기만보기를 선택하시면 자신만의 메모장 처럼 이용 가능하다.
+                        Hint! : 비밀번호를 모두 통일시키면 비공개 메모를 한번에 모두 조회 가능!</h4>
+                    </div>
+                    <div class="span6">
+                        <h4>회사 내 공지 사항으로 사용하기 편리 하다.</h4>
+                    </div>
+                    <div class="span6">
+                        <h4>각종 조건들로 검색이 가능하다.</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn">닫기</button>
             </div>
         </div>
     </div>
@@ -182,7 +235,7 @@
 
     $(function() {
         $('#showMine').click(function() {
-            $('#myModal').modal('show');
+            $('#getWriter').modal('show');
         });
 
         $('#search').click(function() {
@@ -193,7 +246,7 @@
                 type : "POST", // http method
                 data : {writer: writer, password: password},
                 success : function(view) {
-                    $('#myModal').modal('hide');
+                    $('#getWriter').modal('hide');
                     $("#mainContainer").replaceWith(view);
                 },
                 error : function(err) {
@@ -220,5 +273,11 @@
 
     }
 
+    $('#contact').click(function() {
+        $('#contact_modal').modal('show');
+    });
 
+    $('#about').click(function() {
+        $('#about_modal').modal('show');
+    });
 </script>

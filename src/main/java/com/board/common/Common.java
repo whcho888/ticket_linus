@@ -13,7 +13,7 @@ public class Common {
     public List<Board> trimLongContents(List<Board> boardList){
         for(Board board : boardList){
             if(board.getContents().length() >= 100){
-                board.setContents(board.getContents().substring(0, 27)+"...");
+                board.setContents(board.getContents().substring(0, 97)+"...");
             }
         }
         return boardList;

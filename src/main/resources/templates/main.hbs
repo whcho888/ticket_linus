@@ -43,8 +43,8 @@
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="#">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a id="about" onmouseover="" style="cursor: pointer;">About</a></li>
+                <li><a id="contact" onmouseover="" style="cursor: pointer;">Contact</a></li>
             </ul>
         </div><!-- /.nav-collapse -->
     </div><!-- /.container -->
@@ -58,7 +58,7 @@
             </p>
             <div class="jumbotron">
                 <h1>환영합니다.</h1>
-                <p>티켓 게시판에서 자유롭게 글을 작성하고 확인할 수 있습니다. 비밀글 기능이 있어서 자신만의 메모장 처럼 이용하실 수도 있습니다.</p>
+                <p>티켓 게시판에서 자유롭게 글을 작성하고 확인할 수 있습니다. 비밀글 기능이 있어서 자신만의 메모장 처럼 이용할 수도 있습니다.</p>
             </div>
             <div class="row" id="mainContainer">
             </div><!--/row-->
@@ -69,7 +69,7 @@
                 <a class="list-group-item active">메뉴</a>
                 <a class="list-group-item" id="write" onmouseover="" style="cursor: pointer;">글 쓰기</a>
                 <a class="list-group-item" id="showMine" data-toggle="modal" onmouseover="" style="cursor: pointer;">내가 쓴 글 보기</a>
-                <a class="list-group-item" id="showMine" data-toggle="modal" onmouseover="" style="cursor: pointer;">검색하기</a>
+                <a class="list-group-item" id="search" data-toggle="modal" onmouseover="" style="cursor: pointer;">검색하기</a>
                 <a class="list-group-item" id="goMain" href='/'>메인으로</a>
             </div>
         </div><!--/.sidebar-offcanvas-->
@@ -84,9 +84,8 @@
 
 
 <!-- Modal -->
-<div id="myModal" class="modal fade" role="dialog">
+<div id="getWriter" class="modal fade" role="dialog">
     <div class="modal-dialog">
-
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
@@ -113,6 +112,118 @@
         </div>
     </div>
 </div>
+
+<div id="contact_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">개발자 프로필</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row-fluid">
+                    <div class="span6">
+                        <h4>작성자 이름: 조원혁</h4>
+                    </div>
+                    <div class="span6">
+                        <h4>이메일: linus@coupang.com</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="about_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">본 게시판 이용 정보</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row-fluid">
+                    <div class="span6">
+                        <h4>1. 로그인 없이 자신만의 글 작성 가능! 작성자와 비밀번호를 적고 자기만보기를 선택하시면 자신만의 메모장 처럼 이용 가능하다.</h4>
+                        <h5>Hint! : 비밀번호를 모두 통일시키면 비공개 메모를 한번에 모두 조회 가능!</h5>
+                    </div>
+                    <div class="span6">
+                        <h4>2. 회사 내 공지 사항으로 사용하기 편리 하다.</h4>
+                    </div>
+                    <div class="span6">
+                        <h4>3. 각종 조건들로 검색이 가능하다.</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="search_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">다양한 조건으로 검색하기</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row-fluid">
+                    <div class="span6">
+                        <h4>작성자 이름:</h4>
+                        <p><input id="writer" type="text" class="span12"></p>
+                    </div>
+                    <div class="span6">
+                        <h4>비밀 번호:</h4>
+                        <p><input id="password" type="password" class="span12"></p>
+                        <h6>비밀번호 입력시 해당 비밀번호로 등록된 나만의 보기 게시글 모두 검색 가능</h6>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn">취소</button>
+                <button type="button" class="btn btn-primary" id="search">검색 시작</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<tr>
+    <td><div>&nbsp;검색 시작 투표 번호</div>
+        <input type="number" id="minIdx"></td>
+    <td><div>&nbsp;검색 종료 투표 번호</div>
+        <input type="number" id="maxIdx"></td>
+</tr>
+<tr align="center">
+    <td><input type="checkbox" id="isHotIssue" checked="checked">핫이슈 종목<br>
+        <input type="checkbox" id="isStockPoll" checked="checked">개별 주식 종목<br></td>
+    <td><input type="checkbox" id="isKospi" checked="checked" disabled="disabled">코스피<br>
+        <input type="checkbox" id="isKosdaq" checked="checked" disabled="disabled">코스닥<br></td>
+</tr>
+<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr>
+    <td><div>&nbsp;유저 ID (optional)</div> <input type="text" id="userId"></td>
+    <td><div>&nbsp;투표 ID (optional)</div> <input type="text" id="pollId"></td>
+</tr>
+<tr>&nbsp;</tr>
+<tr>
+    <td></td>
+    <td align="right" ><input type="submit"></td>
+</tr>
+
+
+
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
@@ -133,6 +244,31 @@
 
 
 <script>
+
+    $('#isHotIssue').click(function() {
+        // alert($(this).prop('checked'));
+        if ($(this).is(':checked') == true) {
+            $('#isKospi').prop('disabled', true);
+            $('#isKosdaq').prop('disabled', true);
+        }else{
+            $('#isKospi').prop('disabled', false);
+            $('#isKosdaq').prop('disabled', false);
+        }
+    });
+
+    $('#isStockPoll').click(function() {
+        // alert($(this).prop('checked'));
+        if ($(this).is(':checked') == true) {
+            $('#isKospi').prop('checked', "checked");
+            $('#isKosdaq').prop('checked', 'checked');
+        }else{
+            $('#isKospi').prop('checked', '');
+            $('#isKosdaq').prop('checked', '');
+        }
+    });
+
+
+
     $('#write').click(function() {
         ajaxManager.addReq({
             url : "/write/",
@@ -182,7 +318,7 @@
 
     $(function() {
         $('#showMine').click(function() {
-            $('#myModal').modal('show');
+            $('#getWriter').modal('show');
         });
 
         $('#search').click(function() {
@@ -193,7 +329,7 @@
                 type : "POST", // http method
                 data : {writer: writer, password: password},
                 success : function(view) {
-                    $('#myModal').modal('hide');
+                    $('#getWriter').modal('hide');
                     $("#mainContainer").replaceWith(view);
                 },
                 error : function(err) {
@@ -220,5 +356,11 @@
 
     }
 
+    $('#contact').click(function() {
+        $('#contact_modal').modal('show');
+    });
 
+    $('#about').click(function() {
+        $('#about_modal').modal('show');
+    });
 </script>
