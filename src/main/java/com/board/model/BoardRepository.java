@@ -35,10 +35,17 @@ public interface BoardRepository extends CrudRepository<Board, Long> {
 
     List<Board> findByWriterAndPassword(String wrtier, String password);
 
+    List<Board> findByWriterAndPasswordAndIsPrivate(String writer, String password, Boolean isPrivate);
+
     List<Board> findByWriterLikeAndPassword(String wrtier, String password);
 
     List<Board> findByTitleLikeOrContentsLike(String title, String contents);
 
+    List<Board> findByTitleContainingIgnoreCaseOrContentsContainingIgnoreCase(String title, String contents);
 
+    List<Board> findByRegDttmBetweenAndIsPrivate(Date start, Date end, Boolean isPrivate);
 
+    List<Board> findByUpdDttmBetweenAndIsPrivate(Date start, Date end, Boolean isPrivate);
+
+    List<Board> findByTitleContainingIgnoreCaseOrContentsContainingIgnoreCaseAndIsPrivate(String title, String contents, Boolean isPrivate);
 }

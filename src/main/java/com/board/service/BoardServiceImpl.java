@@ -5,10 +5,7 @@ import com.board.model.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by wonhyuk on 2016. 2. 19..
@@ -17,6 +14,8 @@ import java.util.Set;
 public class BoardServiceImpl implements BoardService{
     @Autowired
     private BoardRepository boardRepository;
+
+    //public List<List<Board>> dumpLists = new ArrayList<>();
 
     @Override
     public long register(Board board){
@@ -35,15 +34,23 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
+    public List<Board> combine(List<Board>... list){
+        Set<Board> set = new HashSet<>();
+        for(List<Board> l : list){
+            set.addAll(l);
+        }
+        return new ArrayList<>(set);
+    }
+
+
+    @Override
     public List<Board> findAll(){
         return boardRepository.findAll();
     }
 
     @Override
-    public List<Board> findOwn(String writer, String password) {
-        Set<Board> set = new HashSet<Board>(findByWriterAndIsPrivate(writer, false));
-        set.addAll(findByWriterAndPassword(writer, password));
-        return new ArrayList<Board>(set);
+    public List<Board> findOwn(String writer, String password) {    // old version
+        return combine(findByWriterAndIsPrivate(writer, false), findByWriterAndPassword(writer, password));
     }
 
     @Override
@@ -72,6 +79,21 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
+    public List<Board> findByWriterAndPasswordAndIsPrivate(String writer, String password, Boolean isPrivate){
+        return boardRepository.findByWriterAndPasswordAndIsPrivate(writer, password, isPrivate);
+    }
+
+    @Override
+    public List<Board> findByRegDttmBetween(Date start, Date end){
+        return boardRepository.findByRegDttmBetween(start, end);
+    }
+
+    @Override
+    public List<Board> findByUpdDttmBetween(Date start, Date end){
+        return boardRepository.findByUpdDttmBetween(start, end);
+    }
+
+    @Override
     public List<Board> findByWriterLike(String writer){
         return boardRepository.findByWriterLike(writer);
     }
@@ -84,5 +106,25 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public List<Board> findByTitleLikeOrContentsLike(String title, String contents){
         return boardRepository.findByTitleLikeOrContentsLike(title, contents);
+    }
+
+    @Override
+    public List<Board> findByTitleContainingIgnoreCaseOrContentsContainingIgnoreCase(String title, String contents){
+        return boardRepository.findByTitleContainingIgnoreCaseOrContentsContainingIgnoreCase(title, contents);
+    }
+
+    @Override
+    public List<Board> findByRegDttmBetweenAndIsPrivate(Date start, Date end, Boolean isPrivate){
+        return boardRepository.findByRegDttmBetweenAndIsPrivate(start, end, isPrivate);
+    }
+
+    @Override
+    public List<Board> findByUpdDttmBetweenAndIsPrivate(Date start, Date end, Boolean isPrivate){
+        return boardRepository.findByUpdDttmBetweenAndIsPrivate(start, end, isPrivate);
+    }
+
+    @Override
+    public List<Board> findByTitleContainingIgnoreCaseOrContentsContainingIgnoreCaseAndIsPrivate(String title, String contents, Boolean isPrivate){
+        return boardRepository.findByTitleContainingIgnoreCaseOrContentsContainingIgnoreCaseAndIsPrivate(title, contents, isPrivate);
     }
 }

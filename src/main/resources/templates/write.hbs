@@ -2,7 +2,7 @@
     <form role="form" action="/write/" method="post">
         {{#if board}}
             {{#board}}
-            <input type="text" class="hidden" name="boardSrl" value="{{boardSrl}}">
+            <input type="hidden" name="boardSrl" value="{{boardSrl}}">
             <div class="form-group">
                 <label for="title">제목:</label>
                 <input type="text" class="form-control" name="title" value="{{title}}">
