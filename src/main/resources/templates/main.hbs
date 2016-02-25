@@ -58,10 +58,12 @@
             </p>
             <div class="jumbotron">
                 <h1>환영합니다.</h1>
-                <p>티켓 게시판에서 자유롭게 글을 작성하고 확인할 수 있습니다. 비밀글 기능이 있어서 자신만의 메모장 처럼 이용할 수도 있습니다.</p>
+                <p>티켓 게시판에서 자유롭게 글을 작성하고 확인할 수 있습니다. 비밀글 기능이 있어서 자신만의 메모장 처럼 이용할 수도 있습니다. 추후 이곳에 공지사항을 업로드 할 수 있습니다.</p>
             </div>
             <div class="row" id="mainContainer">
             </div><!--/row-->
+
+
         </div><!--/.col-xs-12.col-sm-9-->
 
         <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar">
@@ -175,7 +177,7 @@
 
 
 <div id="search_modal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
+    <div class="modal-dialog" style="overflow-y: initial !important">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
@@ -183,17 +185,17 @@
                 <h4 class="modal-title">다양한 조건으로 검색하기</h4> <h5>원하는 조건들을 선택하여 입력해 주세요. 중복 조건이 가능합니다.</h5>
             </div>
             <form id="search_form" role="form">
-            <div class="modal-body">
+            <div class="modal-body" style="height: 400px; overflow-y: auto;">
                 <div class="row-fluid">
                     <div class="span6">
-                        <h4>키워드 검색:</h4>
+                        <h4>1. 키워드 검색:</h4>
                         <p><input name="keyword" id="search_keyword" type="text" class="span12"></p>
                         <h6>제목 또는 게시글 내용이 해당 키워드를 포함할 경우</h6>
                     </div>
                     <br>
                     <br>
                     <div class="span6">
-                        <h4>작성자 이름:</h4>
+                        <h4>2. 작성자 이름:</h4>
                         <p><input name="writer" id="search_writer" type="text" class="span12"></p>
                     </div>
                     <div class="checkbox">
@@ -209,7 +211,7 @@
                     <br>
                     <div class="span6">
                         <label><input name="isTimeSearch" type="checkbox" id="search_isTimeSearch">시간별 검색 조건 추가하기</label>
-                        <h4>작성 및 업데이트 시간 기준 검색</h4>
+                        <h4>3. 작성 및 업데이트 시간 기준 검색</h4>
                         <h5>검색 시작 시간</h5>
                         <input name="startTime" id="search_startTime" style="background-color : #adadad" type="datetime-local" readonly>
                         <h5>검색 종료 시간</h5>
@@ -226,6 +228,37 @@
     </div>
 </div>
 
+
+<div id="commentWriter" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">댓글 달기</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row-fluid">
+                    <form id="commentForm" role="form">
+                        <input type="hidden" name="board" id="boardSrlHidden">
+                        <div class="form-group">
+                            <label for="contents">내용:</label>
+                            <textarea class="form-control" rows="3" name="contents"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="usr">작성자 이름:</label>
+                            <input type="text" class="form-control" name="writer">
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn">닫기</button>
+                <button id="saveComment" type="button" data-dismiss="modal" class="btn">저장하기</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <!-- Bootstrap core JavaScript
@@ -320,6 +353,25 @@
         });
     });
 
+    $('#saveComment').click(function() {
+        boardSrl = document.getElementById("boardSrlHidden").value;
+        var commentForm = $("#commentForm").serialize();
+        ajaxManager.addReq({
+            url : "/comment/",
+            type : "POST", // http method
+            data : commentForm,//{writer: writer, password: password, keyword: keyword, startTime: startTime, endTime: endTime, isPrivate: isPrivate},
+            success : function(view) {
+                alert(view);
+                $('#commentWriter').modal('hide');
+                $("#commentContainer").replaceWith(view);
+            },
+            error : function(err) {
+                alert("error on ajax!");
+                // provide a bit more info about the error to the console
+            }
+        });
+    });
+
 
     $(function() {
         $('#showMine').click(function() {
@@ -366,6 +418,11 @@
         });
     });
 
+    function writeComment(boardSrl){
+        document.getElementById('boardSrlHidden').value = boardSrl;
+        $('#commentWriter').modal('show');
+    }
+
     function update(boardSrl){
         ajaxManager.addReq({
             url : "/write/?boardSrl="+boardSrl,
@@ -379,6 +436,22 @@
             }
         });
     }
+
+    function updateComment(commentSrl){
+        ajaxManager.addReq({
+            url : "/comment/",
+            type : "POST", // http method
+            data : {commentSrl: commentSrl},
+            success : function(view) {
+                $("#commentContainer").replaceWith(view);
+            },
+            error : function(err) {
+                alert("error on ajax!");
+                // provide a bit more info about the error to the console
+            }
+        });
+    }
+
 
     function deleteBoard(boardSrl){
         ajaxManager.addReq({
@@ -399,6 +472,22 @@
         });
     }
 
+    function deleteComment(commentSrl, boardSrl){
+        ajaxManager.addReq({
+            url : "/comment/"+commentSrl+"/"+boardSrl,
+            type : "DELETE", // http method
+            success : function(view) {
+                if(view) {
+                    $("#commentContainer").replaceWith(view);
+                }
+            },
+            error : function(err) {
+                alert("error on ajax!");
+                // provide a bit more info about the error to the console
+            }
+        });
+    }
+
     function getDetail(boardSrl){
         ajaxManager.addReq({
             url : "/search/srl",
@@ -406,6 +495,17 @@
             data : {boardSrl: boardSrl},
             success : function(view) {
                 $("#mainContainer").replaceWith(view);
+            },
+            error : function(err) {
+                alert("error on ajax!");
+                // provide a bit more info about the error to the console
+            }
+        });
+        ajaxManager.addReq({
+            url : "/comment/?boardSrl="+boardSrl,
+            type : "GET", // http method
+            success : function(view) {
+                $("#commentContainer").replaceWith(view);
             },
             error : function(err) {
                 alert("error on ajax!");

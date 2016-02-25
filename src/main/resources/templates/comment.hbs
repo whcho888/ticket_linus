@@ -1,0 +1,12 @@
+<div class="row" id="commentContainer">
+    <ul class="list-group">
+        {{#comments}}
+        <li class="list-group-item list-group-item-success"><h5>{{writer}}: {{contents}}</h5>
+            <button align="right" type="button" href="#" id='update' onclick="updateComment({{commentSrl}})" class="btn-xs">수정</button>
+            <button align="right" type="button" href="#" id='delete' onclick="deleteComment({{commentSrl}}, {{boardSrl}})" class="btn-xs">삭제</button>
+        </li>
+        {{/comments}}
+    </ul>
+</div>
+
+

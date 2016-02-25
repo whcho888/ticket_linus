@@ -6,19 +6,20 @@ import javax.persistence.*;
 import java.util.Date;
 
 /**
- * Created by wonhyuk on 2016. 2. 19..
+ * Created by wonhyuk on 2016. 2. 25..
  */
 @Data
 @Entity
-@Table(name="board")
-public class Board {
+@Table(name="comment")
+public class Comment {
     @Id
     @Column(nullable = false, unique = true)
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long boardSrl;
+    private Long commentSrl;
 
-    @Column(nullable = false)
-    private String title;
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="boardSrl")
+    private Board board;
 
     @Column(nullable = false)
     private String contents;
@@ -26,24 +27,17 @@ public class Board {
     @Column(nullable = false)
     private String writer;
 
-    @Column(nullable = false)
-    private String password;
-
     @Column(insertable=false)
     private Date regDttm;
 
     @Column(insertable=false)
     private Date updDttm;
 
-    @Column(insertable = false)
-    private Boolean isPrivate;
+    public Comment(){}
 
-    public Board(){}
-
-    public Board(String title, String contents, String writer, String password){
-        this.setTitle(title);
+    public Comment(Board board, String contents, String writer){
+        this.setBoard(board);
         this.setContents(contents);
         this.setWriter(writer);
-        this.setPassword(password);
     }
 }

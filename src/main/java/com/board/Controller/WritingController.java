@@ -48,8 +48,8 @@ public class WritingController {
             System.out.println("잘못된 Post Data 가 전송되었습니다.");
         }
         else{
-            if (boardDto.getBoardSrl() == 0) {
-                boardService.register(boardDto.convertAsEntity());
+            if (boardDto.isSrlNull()) {
+                boardService.register(boardDto.convertAsNewEntity());
             } else {
                 boardService.update(boardDto.convertAsEntity());
             }

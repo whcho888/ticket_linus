@@ -10,7 +10,7 @@ import java.util.Date;
  */
 @Data
 public class BoardDto implements DtoInterface<BoardDto, Board> {
-    private long boardSrl;
+    private Long boardSrl;
     private String title;
     private String contents;
     private String writer;
@@ -26,6 +26,10 @@ public class BoardDto implements DtoInterface<BoardDto, Board> {
         this.setContents(contents);
         this.setWriter(writer);
         this.setPassword(password);
+    }
+
+    public boolean isSrlNull(){
+        return boardSrl == null;
     }
 
     @Override

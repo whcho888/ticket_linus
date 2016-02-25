@@ -15,7 +15,6 @@ public class BoardServiceImpl implements BoardService{
     @Autowired
     private BoardRepository boardRepository;
 
-    //public List<List<Board>> dumpLists = new ArrayList<>();
 
     @Override
     public long register(Board board){
