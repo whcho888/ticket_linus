@@ -72,7 +72,7 @@
                 <a class="list-group-item" id="write" onmouseover="" style="cursor: pointer;">글 쓰기</a>
                 <a class="list-group-item" id="showMine" data-toggle="modal" onmouseover="" style="cursor: pointer;">내가 쓴 글 보기</a>
                 <a class="list-group-item" id="search" data-toggle="modal" onmouseover="" style="cursor: pointer;">검색하기</a>
-                <a class="list-group-item" id="goMain" href='/'>메인으로</a>
+                <a class="list-group-item" id="goMain" href='/'>전체목록</a>
             </div>
         </div><!--/.sidebar-offcanvas-->
     </div><!--/row-->
@@ -177,22 +177,21 @@
 
 
 <div id="search_modal" class="modal fade" role="dialog">
-    <div class="modal-dialog" style="overflow-y: initial !important">
+    <div class="modal-dialog" id="modal_dialog" style="overflow-y: initial !important">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">다양한 조건으로 검색하기</h4> <h5>원하는 조건들을 선택하여 입력해 주세요. 중복 조건이 가능합니다.</h5>
+                <h4 class="modal-title">다양한 조건으로 검색하기</h4> <h5>원하는 조건들을 선택하여 입력해 주세요. 키워드, 작성자, 시간 조건이 중복 가능합니다.</h5>
             </div>
             <form id="search_form" role="form">
-            <div class="modal-body" style="height: 400px; overflow-y: auto;">
+            <div class="modal-body" id="modal_body" style="height: 400px; overflow-y: auto;">
                 <div class="row-fluid">
                     <div class="span6">
                         <h4>1. 키워드 검색:</h4>
                         <p><input name="keyword" id="search_keyword" type="text" class="span12"></p>
                         <h6>제목 또는 게시글 내용이 해당 키워드를 포함할 경우</h6>
                     </div>
-                    <br>
                     <br>
                     <div class="span6">
                         <h4>2. 작성자 이름:</h4>
@@ -208,7 +207,6 @@
                         <h6>비밀번호 입력시 해당 비밀번호로 등록된 나만의 보기 게시글 모두 검색 가능</h6>
                     </div>
                     <br>
-                    <br>
                     <div class="span6">
                         <label><input name="isTimeSearch" type="checkbox" id="search_isTimeSearch">시간별 검색 조건 추가하기</label>
                         <h4>3. 작성 및 업데이트 시간 기준 검색</h4>
@@ -220,7 +218,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn">취소</button>
+                <button type="button" data-dismiss="modal" class="btn">닫기</button>
                 <button type="button" class="btn btn-primary" id="search_all">검색 시작</button>
             </div>
             </form>
@@ -248,7 +246,7 @@
                         </div>
                         <div class="form-group">
                             <label for="usr">작성자 이름:</label>
-                            <input type="text" class="form-control" name="writer">
+                            <input id="reply_writer" type="text" class="form-control" name="writer">
                         </div>
                     </form>
                 </div>
@@ -342,9 +340,9 @@
         ajaxManager.addReq({
             url : "/search/",
             type : "POST", // http method
-            data : search_form,//{writer: writer, password: password, keyword: keyword, startTime: startTime, endTime: endTime, isPrivate: isPrivate},
+            data : search_form,
             success : function(view) {
-                $('#research_modal').modal('hide');
+                $('#search_modal').modal('hide');
                 $("#mainContainer").replaceWith(view);
             },
             error : function(err) {
@@ -366,7 +364,6 @@
             type : "POST", // http method
             data : commentForm,//{writer: writer, password: password, keyword: keyword, startTime: startTime, endTime: endTime, isPrivate: isPrivate},
             success : function(view) {
-                alert(view);
                 $('#commentWriter').modal('hide');
                 $("#commentContainer").replaceWith(view);
             },
@@ -442,10 +439,11 @@
         });
     }
 
-    function updateComment(commentSrl, boardSrl, contents){
+    function updateComment(commentSrl, boardSrl, contents, writer){
         document.getElementById('commentSrlHidden').value = commentSrl;
         document.getElementById('boardSrlHidden').value = boardSrl;
         document.getElementById('reply_contents').value = contents;
+        document.getElementById('reply_writer').value = writer;
         $('#commentWriter').modal('show');
     }
 

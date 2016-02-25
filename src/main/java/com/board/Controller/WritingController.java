@@ -1,8 +1,10 @@
 package com.board.controller;
 
 import com.board.common.Common;
+import com.board.model.Comment;
 import com.board.modelDto.BoardDto;
 import com.board.service.BoardService;
+import com.board.service.CommentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +25,9 @@ public class WritingController {
     private BoardService boardService;
 
     @Autowired
+    private CommentService commentService;
+
+    @Autowired
     private Common common;
 
     @RequestMapping(value="/", method = RequestMethod.GET)
@@ -36,6 +41,7 @@ public class WritingController {
     @RequestMapping(value="/{boardSrl}", method = RequestMethod.DELETE)
     public Boolean deleteBoard(@PathVariable Long boardSrl, Model model) {
         if (boardSrl != null){
+            commentService.delete(commentService.findByBoard(boardService.findByBoardSrl(boardSrl)));
             boardService.delete(boardSrl);
         }
         return true;

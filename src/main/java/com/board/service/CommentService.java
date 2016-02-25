@@ -14,4 +14,5 @@ public interface CommentService {
     boolean delete(Long commentSrl);
     Comment findByCommentSrl(Long commentSrl);
     List<Comment> findByBoard(Board board);
+    void delete(Iterable<? extends Comment> entities);
 }

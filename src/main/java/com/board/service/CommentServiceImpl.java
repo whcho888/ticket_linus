@@ -43,4 +43,10 @@ public class CommentServiceImpl implements CommentService {
     public List<Comment> findByBoard(Board board){
         return commentRepository.findByBoard(board);
     }
+
+
+    @Override
+    public void delete(Iterable<? extends Comment> entities){
+        commentRepository.delete(entities);
+    }
 }

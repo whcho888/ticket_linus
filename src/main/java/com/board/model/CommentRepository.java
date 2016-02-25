@@ -12,4 +12,5 @@ import java.util.List;
 public interface CommentRepository extends CrudRepository<Comment, Long>  {
     Comment findByCommentSrl(Long commentSrl);
     List<Comment> findByBoard(Board board);
+    void delete(Iterable<? extends Comment> entities);
 }

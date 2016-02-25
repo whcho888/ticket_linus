@@ -35,7 +35,7 @@ public class SearchController {
         String writer = searchDto.getWriter(), password = searchDto.getPassword(), keyword = searchDto.getKeyword();
         if(searchDto.getIsTimeSearch() != null){  // 1
             Date startTime = Common.convertHtmlDateToJavaDate(searchDto.getStartTime());
-            Date endTime = Common.convertHtmlDateToJavaDate(searchDto.getStartTime());
+            Date endTime = Common.convertHtmlDateToJavaDate(searchDto.getEndTime());
             if(!keyword.equals("")){ // 1, 2
                 if(!writer.equals("")){  // 1, 2, 3
                     if(searchDto.getIsPrivate() != null){   // 1, 2, 3, 3-1 //
@@ -98,7 +98,6 @@ public class SearchController {
                ));
            }
         }
-        model.addAttribute("boards", Common.trimLongContents(boardService.findAll()));
         return "board";
     }
 

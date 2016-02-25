@@ -34,9 +34,9 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public List<Board> combine(List<Board>... list){
-        Set<Board> set = new HashSet<>();
+        Set<Board> set = new HashSet<>(list[0]);
         for(List<Board> l : list){
-            set.addAll(l);
+            set.retainAll(l);
         }
         return new ArrayList<>(set);
     }
