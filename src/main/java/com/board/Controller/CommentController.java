@@ -55,7 +55,7 @@ public class CommentController {
     }
 
     @RequestMapping(value="/{commentSrl}/{boardSrl}", method = RequestMethod.DELETE)
-    public String deleteBoard(@PathVariable Long commentSrl, @PathVariable Long boardSrl, Model model) {
+    public String deleteComment(@PathVariable Long commentSrl, @PathVariable Long boardSrl, Model model) {
         if (commentSrl != null){
             commentService.delete(commentSrl);
         }

@@ -241,9 +241,10 @@
                 <div class="row-fluid">
                     <form id="commentForm" role="form">
                         <input type="hidden" name="board" id="boardSrlHidden">
+                        <input type="hidden" name="commentSrl" id="commentSrlHidden">
                         <div class="form-group">
                             <label for="contents">내용:</label>
-                            <textarea class="form-control" rows="3" name="contents"></textarea>
+                            <textarea id="reply_contents" class="form-control" rows="3" name="contents"></textarea>
                         </div>
                         <div class="form-group">
                             <label for="usr">작성자 이름:</label>
@@ -355,6 +356,10 @@
 
     $('#saveComment').click(function() {
         boardSrl = document.getElementById("boardSrlHidden").value;
+        commentSrl = document.getElementById("commentSrlHidden").value;
+        if(commentSrl != null){
+            document.getElementById("commentSrlHidden").value = commentSrl;
+        }
         var commentForm = $("#commentForm").serialize();
         ajaxManager.addReq({
             url : "/comment/",
@@ -437,19 +442,11 @@
         });
     }
 
-    function updateComment(commentSrl){
-        ajaxManager.addReq({
-            url : "/comment/",
-            type : "POST", // http method
-            data : {commentSrl: commentSrl},
-            success : function(view) {
-                $("#commentContainer").replaceWith(view);
-            },
-            error : function(err) {
-                alert("error on ajax!");
-                // provide a bit more info about the error to the console
-            }
-        });
+    function updateComment(commentSrl, boardSrl, contents){
+        document.getElementById('commentSrlHidden').value = commentSrl;
+        document.getElementById('boardSrlHidden').value = boardSrl;
+        document.getElementById('reply_contents').value = contents;
+        $('#commentWriter').modal('show');
     }
 
 
@@ -512,7 +509,6 @@
                 // provide a bit more info about the error to the console
             }
         });
-
     }
 
     $('#contact').click(function() {

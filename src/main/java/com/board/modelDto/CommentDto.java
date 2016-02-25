@@ -33,6 +33,7 @@ public class CommentDto implements DtoInterface<CommentDto, Comment> {
     @Override
     public CommentDto convertAsDto(Comment comment) {
         this.setCommentSrl(comment.getCommentSrl());
+        this.setBoard(comment.getBoard());
         this.setContents(comment.getContents());
         this.setWriter(comment.getWriter());
         this.setRegDttm(comment.getRegDttm());
@@ -44,6 +45,7 @@ public class CommentDto implements DtoInterface<CommentDto, Comment> {
     public Comment convertAsEntity(){
         Comment comment = new Comment();
         comment.setCommentSrl(this.getCommentSrl());
+        comment.setBoard(this.getBoard());
         comment.setContents(this.getContents());
         comment.setWriter(this.getWriter());
         comment.setRegDttm(this.getRegDttm());
