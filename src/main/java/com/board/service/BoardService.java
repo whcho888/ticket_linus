@@ -1,6 +1,7 @@
 package com.board.service;
 
 import com.board.model.Board;
+import com.board.modelDto.BoardDto;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,6 +18,7 @@ public interface BoardService {
     List<Board> findAll();
     List<Board> findOwn(String writer, String password);
     List<Board> findByIsPrivate(Boolean isPrivate);
+    List<Board> findByIsPrivateOrderByUpdDttmDesc(Boolean isPrivate);
     Board findByBoardSrl(Long boardSrl);
     List<Board> findByWriter(String writer);
     List<Board> findByWriterAndIsPrivate(String writer, Boolean isPrivate);

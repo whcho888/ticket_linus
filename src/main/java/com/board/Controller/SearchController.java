@@ -1,5 +1,6 @@
 package com.board.controller;
 
+import com.board.model.Board;
 import com.board.modelDto.SearchDto;
 import com.board.service.BoardService;
 import lombok.extern.slf4j.Slf4j;
@@ -10,9 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import com.board.common.Common;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by wonhyuk on 2016. 2. 23..
@@ -26,78 +26,30 @@ public class SearchController {
 
     @RequestMapping(value="/", method = RequestMethod.GET)
     public String searchAll(@RequestParam(required = false) int idx, Model model){
-        model.addAttribute("boards", Common.trimLongContents(boardService.findByIsPrivate(false)));
+        model.addAttribute("boards", Common.trimLongContents(boardService.findByIsPrivateOrderByUpdDttmDesc(false)));
         return "board";
     }
 
     @RequestMapping(value="/", method = RequestMethod.POST)
     public String searchByConditions(@ModelAttribute SearchDto searchDto, Model model){
         String writer = searchDto.getWriter(), password = searchDto.getPassword(), keyword = searchDto.getKeyword();
-        if(searchDto.getIsTimeSearch() != null){  // 1
+        List<Board> combinedBoard = null;
+        if(searchDto.getIsTimeSearch() != null) {  // 1
             Date startTime = Common.convertHtmlDateToJavaDate(searchDto.getStartTime());
             Date endTime = Common.convertHtmlDateToJavaDate(searchDto.getEndTime());
-            if(!keyword.equals("")){ // 1, 2
-                if(!writer.equals("")){  // 1, 2, 3
-                    if(searchDto.getIsPrivate() != null){   // 1, 2, 3, 3-1 //
-                        model.addAttribute("boards", Common.trimLongContents(boardService.combine(
-                                boardService.findByRegDttmBetweenAndIsPrivate(startTime, endTime, false),  // 1
-                                boardService.findByUpdDttmBetweenAndIsPrivate(startTime, endTime, false),  // 1
-                                boardService.findByTitleContainingIgnoreCaseOrContentsContainingIgnoreCaseAndIsPrivate(keyword, keyword, false), // 2
-                                boardService.findByWriterAndIsPrivate(writer, false), // 3
-                                boardService.findByWriterAndPassword(writer, password)  // 3-1
-                        )));
-                    } else {    // 1, 2, 3 //
-                        model.addAttribute("boards", Common.trimLongContents(boardService.combine(
-                                boardService.findByRegDttmBetweenAndIsPrivate(startTime, endTime, false),  // 1
-                                boardService.findByUpdDttmBetweenAndIsPrivate(startTime, endTime, false),  // 1
-                                boardService.findByTitleContainingIgnoreCaseOrContentsContainingIgnoreCaseAndIsPrivate(keyword, keyword, false), // 2
-                                boardService.findByWriterAndIsPrivate(writer, false)
-                        ))); // 3
-                    }
-                } else {    // 1, 2 //
-                    model.addAttribute("boards", Common.trimLongContents(boardService.combine(
-                            boardService.findByRegDttmBetweenAndIsPrivate(startTime, endTime, false),  // 1
-                            boardService.findByUpdDttmBetweenAndIsPrivate(startTime, endTime, false),  // 1
-                            boardService.findByTitleContainingIgnoreCaseOrContentsContainingIgnoreCaseAndIsPrivate(keyword, keyword, false)
-                    ))); // 2
-                }
-            } else {    // 1 //
-                model.addAttribute("boards", Common.trimLongContents(boardService.combine(
-                        boardService.findByRegDttmBetweenAndIsPrivate(startTime, endTime, false),  // 1
-                        boardService.findByUpdDttmBetweenAndIsPrivate(startTime, endTime, false)  // 1
-                )));
-            }
-        } else if(!keyword.equals("")){ // 2
-           if(!writer.equals("")){   // 2, 3
-               if(searchDto.getIsPrivate() != null) { // 2, 3, 3-1 //
-                   model.addAttribute("boards", Common.trimLongContents(boardService.combine(
-                           boardService.findByTitleContainingIgnoreCaseOrContentsContainingIgnoreCaseAndIsPrivate(keyword, keyword, false), // 2
-                           boardService.findByWriterAndIsPrivate(writer, false), // 3
-                           boardService.findByWriterAndPassword(writer, password)  // 3-1
-                   )));
-               } else { // 2, 3 //
-                   model.addAttribute("boards", Common.trimLongContents(boardService.combine(
-                           boardService.findByTitleContainingIgnoreCaseOrContentsContainingIgnoreCaseAndIsPrivate(keyword, keyword, false), // 2
-                           boardService.findByWriterAndIsPrivate(writer, false) // 3
-                   )));
-               }
-           } else { // 2 //
-               model.addAttribute("boards", Common.trimLongContents(
-                       boardService.findByTitleContainingIgnoreCaseOrContentsContainingIgnoreCaseAndIsPrivate(keyword, keyword, false) // 2
-               ));
-           }
-        } else if (!writer.equals("")) { // 3
-           if(searchDto.getIsPrivate() != null) { // 3, 3-1 //
-               model.addAttribute("boards", Common.trimLongContents(boardService.combine(
-                       boardService.findByWriterAndIsPrivate(writer, false), // 3
-                       boardService.findByWriterAndPassword(writer, password)  // 3-1
-               )));
-           } else { // 3 //
-               model.addAttribute("boards", Common.trimLongContents(
-                       boardService.findByWriterAndIsPrivate(writer, false) // 3
-               ));
-           }
+            combinedBoard = boardService.combine(boardService.findByRegDttmBetweenAndIsPrivate(startTime, endTime, false),
+                                            boardService.findByUpdDttmBetweenAndIsPrivate(startTime, endTime, false));
         }
+        if(!keyword.equals("")) {    // 2
+            combinedBoard = boardService.combine(combinedBoard, boardService.findByTitleContainingIgnoreCaseOrContentsContainingIgnoreCaseAndIsPrivate(keyword, keyword, false));
+        }
+        if(!writer.equals("")) { // 3
+            combinedBoard = boardService.combine(combinedBoard, boardService.findByWriterAndIsPrivate(writer, false));
+            if (searchDto.getIsPrivate() != null) { // 3-1
+                combinedBoard = boardService.combine(combinedBoard, boardService.findByWriterAndPassword(writer, password));
+            }
+        }
+        model.addAttribute("boards", combinedBoard);
         return "board";
     }
 

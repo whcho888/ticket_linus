@@ -34,9 +34,11 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public List<Board> combine(List<Board>... list){
-        Set<Board> set = new HashSet<>(list[0]);
+        int i = -1; while(list[++i] == null){}
+        Set<Board> set = new HashSet<>(list[i]);
         for(List<Board> l : list){
-            set.retainAll(l);
+            if(l != null)
+                set.retainAll(l);
         }
         return new ArrayList<>(set);
     }
@@ -55,6 +57,11 @@ public class BoardServiceImpl implements BoardService{
     @Override
     public List<Board> findByIsPrivate(Boolean isPrivate){
         return boardRepository.findByIsPrivate(isPrivate);
+    }
+
+    @Override
+    public List<Board> findByIsPrivateOrderByUpdDttmDesc(Boolean isPrivate){
+        return boardRepository.findByIsPrivateOrderByUpdDttmDesc(isPrivate);
     }
 
     @Override

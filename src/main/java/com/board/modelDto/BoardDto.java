@@ -55,7 +55,11 @@ public class BoardDto implements DtoInterface<BoardDto, Board> {
         board.setPassword(this.getPassword());
         board.setRegDttm(this.getRegDttm());
         board.setUpdDttm(this.getUpdDttm());
-        board.setIsPrivate(this.getIsPrivate());
+        if(isPrivate != null) {
+            board.setIsPrivate(this.getIsPrivate());
+        } else {
+            board.setIsPrivate(false);
+        }
         return board;
     }
 

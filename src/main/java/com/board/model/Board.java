@@ -35,7 +35,7 @@ public class Board {
     @Column(insertable=false)
     private Date updDttm;
 
-    @Column(insertable = false)
+    @Column(nullable = false)
     private Boolean isPrivate;
 
     public Board(){}

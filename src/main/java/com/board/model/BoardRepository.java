@@ -19,9 +19,9 @@ public interface BoardRepository extends CrudRepository<Board, Long> {
 
     List<Board> findByTitle(String title);
 
-    List<Board> findByContents(String contents);
-
     List<Board> findByIsPrivate(Boolean isPrivate);
+
+    List<Board> findByIsPrivateOrderByUpdDttmDesc(Boolean isPrivate);
 
     List<Board> findByWriter(String writer);
 

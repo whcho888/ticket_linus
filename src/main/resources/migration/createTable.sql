@@ -1,7 +1,8 @@
 
 create database `ticketLinus` CHARACTER SET utf8 COLLATE utf8_general_ci;
+use ticketLinus;
 
-create table `ticketLinus`.`board` (
+create table Board (
 boardSrl int(11) auto_increment,
 title varchar(100) not null,
 contents text,

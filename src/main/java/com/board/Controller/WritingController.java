@@ -55,7 +55,7 @@ public class WritingController {
         }
         else{
             if (boardDto.isSrlNull()) {
-                boardService.register(boardDto.convertAsNewEntity());
+                boardService.register(boardDto.convertAsEntity());
             } else {
                 boardService.update(boardDto.convertAsEntity());
             }
